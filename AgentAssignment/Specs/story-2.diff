@@ -1,0 +1,74 @@
+diff --git a/AgentAssignment/Sample/Dal/EnterpriseRepository.cs b/AgentAssignment/Sample/Dal/EnterpriseRepository.cs
+index 0000010..0000011 100644
+--- a/AgentAssignment/Sample/Dal/EnterpriseRepository.cs
++++ b/AgentAssignment/Sample/Dal/EnterpriseRepository.cs
+@@ -5,4 +5,8 @@
+ public class EnterpriseRepository
+ {
+     private readonly List<Enterprise> _store = [];
++
++    public Enterprise? GetById(Guid id) => _store.FirstOrDefault(e => e.Id == id);
+ }
+diff --git a/AgentAssignment/Sample/Dal/UserRepository.cs b/AgentAssignment/Sample/Dal/UserRepository.cs
+index 0000002..0000012 100644
+--- a/AgentAssignment/Sample/Dal/UserRepository.cs
++++ b/AgentAssignment/Sample/Dal/UserRepository.cs
+@@ -11,4 +11,13 @@
+     public IReadOnlyList<User> GetAll() => _store.AsReadOnly();
++
++    public User? GetById(Guid id) => _store.FirstOrDefault(u => u.Id == id);
++
++    public User? Update(Guid id, string? name, string? email)
++    {
++        var i = _store.FindIndex(u => u.Id == id);
++        if (i < 0) return null;
++        _store[i] = _store[i] with { Name = name ?? _store[i].Name, Email = email ?? _store[i].Email };
++        return _store[i];
++    }
+ }
+diff --git a/AgentAssignment/Sample/Service/EnterpriseService.cs b/AgentAssignment/Sample/Service/EnterpriseService.cs
+index 0000013..0000014 100644
+--- a/AgentAssignment/Sample/Service/EnterpriseService.cs
++++ b/AgentAssignment/Sample/Service/EnterpriseService.cs
+@@ -4,4 +4,10 @@
+ public class EnterpriseService(EnterpriseRepository repo)
+ {
++    public Enterprise GetById(Guid id) =>
++        repo.GetById(id) ?? throw new KeyNotFoundException($"Enterprise {id} not found.");
+ }
+diff --git a/AgentAssignment/Sample/Service/UserService.cs b/AgentAssignment/Sample/Service/UserService.cs
+index 0000004..0000015 100644
+--- a/AgentAssignment/Sample/Service/UserService.cs
++++ b/AgentAssignment/Sample/Service/UserService.cs
+@@ -8,4 +8,9 @@
+     public User Create(string name, string email) { ... }
++
++    public User Update(Guid id, string? name, string? email) =>
++        repo.Update(id, name, email) ?? throw new KeyNotFoundException($"User {id} not found.");
+ }
+diff --git a/AgentAssignment/Sample/Api/EnterprisesController.cs b/AgentAssignment/Sample/Api/EnterprisesController.cs
+index 0000016..0000017 100644
+--- a/AgentAssignment/Sample/Api/EnterprisesController.cs
++++ b/AgentAssignment/Sample/Api/EnterprisesController.cs
+@@ -4,4 +4,10 @@
+ public class EnterprisesController(EnterpriseService service)
+ {
++    // GET /enterprises/{id}
++    public Enterprise Get(Guid id)
++    {
++        return service.GetById(id);
++    }
+ }
+diff --git a/AgentAssignment/Sample/Api/UsersController.cs b/AgentAssignment/Sample/Api/UsersController.cs
+index 0000006..0000018 100644
+--- a/AgentAssignment/Sample/Api/UsersController.cs
++++ b/AgentAssignment/Sample/Api/UsersController.cs
+@@ -8,4 +8,11 @@
+     public User Post(string name, string email) { ... }
++
++    // PUT /users/{id}
++    public User Put(Guid id, string? name, string? email)
++    {
++        return service.Update(id, name, email);
++    }
+ }

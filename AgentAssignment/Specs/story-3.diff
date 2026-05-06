@@ -1,0 +1,38 @@
+diff --git a/AgentAssignment/Sample/Dal/EnterpriseRepository.cs b/AgentAssignment/Sample/Dal/EnterpriseRepository.cs
+index 0000011..0000020 100644
+--- a/AgentAssignment/Sample/Dal/EnterpriseRepository.cs
++++ b/AgentAssignment/Sample/Dal/EnterpriseRepository.cs
+@@ -7,4 +7,13 @@
+     public Enterprise? GetById(Guid id) => _store.FirstOrDefault(e => e.Id == id);
++
++    public Enterprise? Update(Guid id, string? name, string? domain)
++    {
++        var i = _store.FindIndex(e => e.Id == id);
++        if (i < 0) return null;
++        _store[i] = _store[i] with { Name = name ?? _store[i].Name, Domain = domain ?? _store[i].Domain };
++        return _store[i];
++    }
+ }
+diff --git a/AgentAssignment/Sample/Service/EnterpriseService.cs b/AgentAssignment/Sample/Service/EnterpriseService.cs
+index 0000014..0000021 100644
+--- a/AgentAssignment/Sample/Service/EnterpriseService.cs
++++ b/AgentAssignment/Sample/Service/EnterpriseService.cs
+@@ -6,4 +6,8 @@
+     public Enterprise GetById(Guid id) { ... }
++
++    public Enterprise Update(Guid id, string? name, string? domain) =>
++        repo.Update(id, name, domain) ?? throw new KeyNotFoundException($"Enterprise {id} not found.");
+ }
+diff --git a/AgentAssignment/Sample/Api/EnterprisesController.cs b/AgentAssignment/Sample/Api/EnterprisesController.cs
+index 0000017..0000022 100644
+--- a/AgentAssignment/Sample/Api/EnterprisesController.cs
++++ b/AgentAssignment/Sample/Api/EnterprisesController.cs
+@@ -8,4 +8,11 @@
+     public Enterprise Get(Guid id) { ... }
++
++    // PUT /enterprises/{id}
++    public Enterprise Put(Guid id, string? name, string? domain)
++    {
++        return service.Update(id, name, domain);
++    }
+ }

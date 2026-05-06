@@ -1,0 +1,45 @@
+diff --git a/AgentAssignment/Sample/Dal/UserRepository.cs b/AgentAssignment/Sample/Dal/UserRepository.cs
+index 0000001..0000002 100644
+--- a/AgentAssignment/Sample/Dal/UserRepository.cs
++++ b/AgentAssignment/Sample/Dal/UserRepository.cs
+@@ -5,4 +5,16 @@
+ public class UserRepository
+ {
+     private readonly List<User> _store = [];
++
++    public User Insert(string name, string email)
++    {
++        var user = new User(Guid.NewGuid(), name, email);
++        _store.Add(user);
++        return user;
++    }
++
++    public IReadOnlyList<User> GetAll() => _store.AsReadOnly();
+ }
+diff --git a/AgentAssignment/Sample/Service/UserService.cs b/AgentAssignment/Sample/Service/UserService.cs
+index 0000003..0000004 100644
+--- a/AgentAssignment/Sample/Service/UserService.cs
++++ b/AgentAssignment/Sample/Service/UserService.cs
+@@ -4,4 +4,10 @@
+ public class UserService(UserRepository repo)
+ {
++    public User Create(string name, string email)
++    {
++        if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email))
++            throw new ArgumentException("Name and email are required.");
++        return repo.Insert(name, email);
++    }
+ }
+diff --git a/AgentAssignment/Sample/Api/UsersController.cs b/AgentAssignment/Sample/Api/UsersController.cs
+index 0000005..0000006 100644
+--- a/AgentAssignment/Sample/Api/UsersController.cs
++++ b/AgentAssignment/Sample/Api/UsersController.cs
+@@ -4,4 +4,10 @@
+ public class UsersController(UserService service)
+ {
++    // POST /users
++    public User Post(string name, string email)
++    {
++        return service.Create(name, email);
++    }
+ }

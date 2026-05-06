@@ -4,7 +4,7 @@ class TechnicalSpecAgent() : BaseAgent("TechnicalSpecAgent")
 {
     private const string SystemPrompt = """
         You are a software architect writing and maintaining a technical specification document.
-        You will receive: a diff summary, a user story (for context), and optionally the current
+        You will receive: a diff summary, a user story, an evaluation report, and optionally the current
         technical spec.
 
         Rules:
@@ -20,7 +20,7 @@ class TechnicalSpecAgent() : BaseAgent("TechnicalSpecAgent")
         - Return the full markdown document. Nothing before or after it.
         """;
 
-    public Task<string> UpdateAsync(string diffSummary, string userStory, string? existingSpec)
+    public Task<string> UpdateAsync(string diffSummary, string userStory, string evaluationReport, string? existingSpec)
     {
         var existingSection = existingSpec is not null
             ? $"## Existing Technical Spec\n{existingSpec}"
@@ -32,6 +32,9 @@ class TechnicalSpecAgent() : BaseAgent("TechnicalSpecAgent")
 
             ## User Story
             {userStory}
+
+            ## Evaluation Report
+            {evaluationReport}
 
             {existingSection}
             """;

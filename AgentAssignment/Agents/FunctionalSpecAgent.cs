@@ -4,7 +4,7 @@ class FunctionalSpecAgent() : BaseAgent("FunctionalSpecAgent")
 {
     private const string SystemPrompt = """
         You are a business analyst writing and maintaining a functional specification document.
-        You will receive: a diff summary, a user story, and optionally the current functional spec.
+        You will receive: a diff summary, a user story, an evaluation report, and optionally the current functional spec.
 
         Rules:
         - Write from a user/business perspective — no code, no technical jargon.
@@ -13,13 +13,12 @@ class FunctionalSpecAgent() : BaseAgent("FunctionalSpecAgent")
         - If no existing spec is provided, create a full document from scratch.
         - Add a changelog entry at the bottom under "## Changelog" with today's date and a
           one-line description of what changed.
-        - Cross-reference the user story acceptance criteria against the diff summary.
-          Under "## Open Items", list any acceptance criteria that do not appear to be addressed.
-          If all criteria appear covered, write "None."
+        - Under "## Open Items", carry forward any gaps from the evaluation report.
+          If the evaluation status is "Mismatch", clearly flag it here. Write "None" if fully implemented.
         - Return the full markdown document. Nothing before or after it.
         """;
 
-    public Task<string> UpdateAsync(string diffSummary, string userStory, string? existingSpec)
+    public Task<string> UpdateAsync(string diffSummary, string userStory, string evaluationReport, string? existingSpec)
     {
         var existingSection = existingSpec is not null
             ? $"## Existing Functional Spec\n{existingSpec}"
@@ -31,6 +30,9 @@ class FunctionalSpecAgent() : BaseAgent("FunctionalSpecAgent")
 
             ## User Story
             {userStory}
+
+            ## Evaluation Report
+            {evaluationReport}
 
             {existingSection}
             """;

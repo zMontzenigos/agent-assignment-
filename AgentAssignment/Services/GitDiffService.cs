@@ -2,27 +2,22 @@ using System.Diagnostics;
 
 namespace AgentAssignment.Services;
 
-class GitDiffService
+class GitDiffService(string diffFile)
 {
     public async Task<string> GetDiffAsync()
     {
-        var diffFile = Environment.GetEnvironmentVariable("DIFF_FILE");
-        if (!string.IsNullOrWhiteSpace(diffFile))
-        {
-            var resolved = System.IO.Path.IsPathRooted(diffFile)
-                ? diffFile
-                : System.IO.Path.Combine(Directory.GetCurrentDirectory(), diffFile);
-            if (File.Exists(resolved))
-                return await File.ReadAllTextAsync(resolved);
-        }
+        var resolved = Path.IsPathRooted(diffFile)
+            ? diffFile
+            : Path.Combine(Directory.GetCurrentDirectory(), diffFile);
+
+        if (File.Exists(resolved))
+            return await File.ReadAllTextAsync(resolved);
 
         var diff = await RunGitAsync("diff HEAD~1 HEAD");
-
         if (string.IsNullOrWhiteSpace(diff))
             diff = await RunGitAsync("diff HEAD");
-
         if (string.IsNullOrWhiteSpace(diff))
-            throw new InvalidOperationException("No git diff found. Set DIFF_FILE or ensure there is at least one commit with changes.");
+            throw new InvalidOperationException($"Diff file '{diffFile}' not found and no git diff available.");
 
         return diff;
     }
