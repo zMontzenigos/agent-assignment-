@@ -17,6 +17,7 @@ abstract class BaseAgent(string name)
             RedirectStandardError = true,
             UseShellExecute = false
         };
+        psi.EnvironmentVariables.Remove("CLAUDECODE");
 
         using var process = Process.Start(psi)
             ?? throw new InvalidOperationException("Failed to start claude process. Ensure 'claude' is on PATH.");

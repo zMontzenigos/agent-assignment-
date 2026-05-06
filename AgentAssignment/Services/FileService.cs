@@ -1,11 +1,11 @@
 namespace AgentAssignment.Services;
 
-class FileService(string baseDir)
+class FileService(string baseDir, string storyFile = "Specs/user-story.md")
 {
     private string Path(string relativePath) => System.IO.Path.Combine(baseDir, relativePath);
 
     public Task<string> ReadUserStoryAsync() =>
-        File.ReadAllTextAsync(Path("Specs/user-story.md"));
+        File.ReadAllTextAsync(Path(storyFile));
 
     public async Task<string?> ReadSpecIfExistsAsync(string relativePath)
     {

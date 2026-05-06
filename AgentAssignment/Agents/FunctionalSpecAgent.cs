@@ -4,8 +4,7 @@ class FunctionalSpecAgent() : BaseAgent("FunctionalSpecAgent")
 {
     private const string SystemPrompt = """
         You are a business analyst writing and maintaining a functional specification document.
-        You will receive: a diff summary, a user story, an evaluation report, and optionally
-        the current functional spec.
+        You will receive: a diff summary, a user story, and optionally the current functional spec.
 
         Rules:
         - Write from a user/business perspective — no code, no technical jargon.
@@ -14,21 +13,17 @@ class FunctionalSpecAgent() : BaseAgent("FunctionalSpecAgent")
         - If no existing spec is provided, create a full document from scratch.
         - Add a changelog entry at the bottom under "## Changelog" with today's date and a
           one-line description of what changed.
-        - Under "## Open Items", list everything from the evaluation's "Potentially Missing"
-          section that has not yet been addressed. If none, write "None."
-        - Do not re-evaluate or add your own findings — only document what you receive.
+        - Cross-reference the user story acceptance criteria against the diff summary.
+          Under "## Open Items", list any acceptance criteria that do not appear to be addressed.
+          If all criteria appear covered, write "None."
         - Return the full markdown document. Nothing before or after it.
         """;
 
-    public Task<string> UpdateAsync(string diffSummary, string userStory, string? evaluationReport, string? existingSpec)
+    public Task<string> UpdateAsync(string diffSummary, string userStory, string? existingSpec)
     {
         var existingSection = existingSpec is not null
             ? $"## Existing Functional Spec\n{existingSpec}"
             : "## Existing Functional Spec\nNone — create from scratch.";
-
-        var evalSection = evaluationReport is not null
-            ? $"## Evaluation Report\n{evaluationReport}"
-            : "## Evaluation Report\nNot run.";
 
         var userContent = $"""
             ## Diff Summary
@@ -36,8 +31,6 @@ class FunctionalSpecAgent() : BaseAgent("FunctionalSpecAgent")
 
             ## User Story
             {userStory}
-
-            {evalSection}
 
             {existingSection}
             """;

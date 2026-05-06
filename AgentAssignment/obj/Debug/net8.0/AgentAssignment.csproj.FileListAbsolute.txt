@@ -1,0 +1,15 @@
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/bin/Debug/net8.0/AgentAssignment
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/bin/Debug/net8.0/AgentAssignment.deps.json
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/bin/Debug/net8.0/AgentAssignment.runtimeconfig.json
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/bin/Debug/net8.0/AgentAssignment.dll
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/bin/Debug/net8.0/AgentAssignment.pdb
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/AgentAssignment.GeneratedMSBuildEditorConfig.editorconfig
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/AgentAssignment.AssemblyInfoInputs.cache
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/AgentAssignment.AssemblyInfo.cs
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/AgentAssignment.csproj.CoreCompileInputs.cache
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/AgentAssignment.sourcelink.json
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/AgentAssignment.dll
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/refint/AgentAssignment.dll
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/AgentAssignment.pdb
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/AgentAssignment.genruntimeconfig.cache
+/Users/zacharymontzenigos/repos/agent-assignment-/AgentAssignment/obj/Debug/net8.0/ref/AgentAssignment.dll
