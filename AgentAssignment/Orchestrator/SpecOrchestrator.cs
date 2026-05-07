@@ -34,14 +34,14 @@ class SpecOrchestrator(GitDiffService gitDiff, FileService files, string storyLa
         var (funcSpec, techSpec, claudeMd) = await WriteDocsAsync(diffSummary, userStory, evaluation, existingFuncSpec, existingTechSpec, existingClaudeMd);
 
         await Task.WhenAll(
-            files.WriteSpecAsync("Specs/functional-spec.md", funcSpec),
-            files.WriteSpecAsync("Specs/technical-spec.md", techSpec),
+            files.WriteSpecAsync("functional-spec.md", funcSpec),
+            files.WriteSpecAsync("technical-spec.md", techSpec),
             files.WriteSpecAsync("CLAUDE.md", claudeMd)
         );
 
         Console.WriteLine("\n=== Done ===");
-        Console.WriteLine("  Specs/functional-spec.md  updated");
-        Console.WriteLine("  Specs/technical-spec.md   updated");
+        Console.WriteLine("  AgentAssignment/functional-spec.md updated");
+        Console.WriteLine("  AgentAssignment/technical-spec.md  updated");
         Console.WriteLine("  AgentAssignment/CLAUDE.md updated");
     }
 
@@ -49,8 +49,8 @@ class SpecOrchestrator(GitDiffService gitDiff, FileService files, string storyLa
     {
         var diffTask = gitDiff.GetDiffAsync();
         var storyTask = files.ReadUserStoryAsync();
-        var funcTask = files.ReadSpecIfExistsAsync("Specs/functional-spec.md");
-        var techTask = files.ReadSpecIfExistsAsync("Specs/technical-spec.md");
+        var funcTask = files.ReadSpecIfExistsAsync("functional-spec.md");
+        var techTask = files.ReadSpecIfExistsAsync("technical-spec.md");
         var claudeTask = files.ReadSpecIfExistsAsync("CLAUDE.md");
 
         await Task.WhenAll((Task)diffTask, storyTask, funcTask, techTask, claudeTask);
